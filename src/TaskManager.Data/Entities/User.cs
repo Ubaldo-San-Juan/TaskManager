@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Data.Entities
 {
-    public abstract class User : BaseEntity
+    public class User : BaseEntity
     {
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
