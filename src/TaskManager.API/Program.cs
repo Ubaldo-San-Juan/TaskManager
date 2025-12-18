@@ -12,6 +12,7 @@ builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 
+await app.SeedDataAsync();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -22,6 +23,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthorization();
 app.MapControllers();
 
 
