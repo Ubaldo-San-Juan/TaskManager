@@ -10,7 +10,7 @@
 ├── 📄 TaskManager.sln
 ├── 🐳 docker-compose.yml
 │
-└── 📂 src (Código Fuente)
+└── 📂 src
     ├── 📂 1. TaskManager.Data
     │   ├── 📂 Configurations
     │   ├── 📂 Contexts
