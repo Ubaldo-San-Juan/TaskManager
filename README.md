@@ -1,7 +1,7 @@
 # TaskManager Project
 
 ```text
-/GestorTareas (Raíz del Repositorio)
+/Taskmanager (Root Path)
 ├── 📂 .github/workflows
 │   └── 📄 dotnet-ci.yml
 ├── 📂 .vscode
