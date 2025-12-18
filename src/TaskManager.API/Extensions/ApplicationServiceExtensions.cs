@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManager.Data.Context;
+using TaskManager.Data.Interfaces;
+using TaskManager.Data.Repositories;
 namespace TaskManager.API.Extensions
 {
     public static class ApplicationServiceExtensions
@@ -10,6 +12,9 @@ namespace TaskManager.API.Extensions
             {
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
             return services;
         }
     }
