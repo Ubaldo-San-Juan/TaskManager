@@ -1,17 +1,17 @@
 # TaskManager Project
 
 ```text
-/Taskmanager (Root Path)
+/TaskManager (Root Path)
 ├── 📂 .github/workflows
 │   └── 📄 dotnet-ci.yml
 ├── 📂 .vscode
 ├── 📄 .gitignore
 ├── 📄 README.md
-├── 📄 GestorTareas.sln
+├── 📄 TaskManager.sln
 ├── 🐳 docker-compose.yml
 │
 └── 📂 src (Código Fuente)
-    ├── 📂 1. GestorTareas.Data
+    ├── 📂 1. TaskManager.Data
     │   ├── 📂 Configurations
     │   ├── 📂 Contexts
     │   ├── 📂 Entities
@@ -20,7 +20,7 @@
     │   ├── 📂 Seeders
     │   └── 📂 Migrations
     │
-    ├── 📂 2. GestorTareas.Business
+    ├── 📂 2. TaskManager.Business
     │   ├── 📂 Common
     │   ├── 📂 DTOs
     │   ├── 📂 Interfaces
@@ -28,7 +28,7 @@
     │   ├── 📂 Services
     │   └── 📂 Validators
     │
-    └── 📂 3. GestorTareas.API
+    └── 📂 3. TaskManager.API
         ├── 🐳 Dockerfile
         ├── 📂 Controllers
         ├── 📂 Extensions
