@@ -1,5 +1,4 @@
 # TaskManager Project
-#### Concepto para aprender Gitflow en un entorno real de .NET.
 
 ```text
 /GestorTareas (Raíz del Repositorio)
