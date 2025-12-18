@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Business.Interfaces;
+using TaskManager.Business.Mappings;
 using TaskManager.Business.Services;
 using TaskManager.Business.Validators;
 using TaskManager.Data.Context;
@@ -22,7 +23,7 @@ namespace TaskManager.API.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
 
             // Automapper
-            services.AddAutoMapper(typeof(Program).Assembly);
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
             // Fluent validation
             services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
