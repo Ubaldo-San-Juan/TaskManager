@@ -45,3 +45,4 @@ appsettings.Development.json
 appsettings.local.json
 secrets.json
 .env
+.fake

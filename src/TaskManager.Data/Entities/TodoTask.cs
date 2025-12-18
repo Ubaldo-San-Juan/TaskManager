@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Data.Entities
 {
-    public abstract class TodoTask : BaseEntity
+    public class TodoTask : BaseEntity
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
