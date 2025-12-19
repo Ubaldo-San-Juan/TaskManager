@@ -28,5 +28,11 @@ namespace TaskManager.Business.Services
             var users = await _userRepository.GetAllUsersAsync();
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
+
+        public async Task<UserDto?> GetUserByIdAsync(int userId)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            return user == null ? null : _mapper.Map<UserDto>(user);
+        }
     }
 }

@@ -24,5 +24,17 @@ namespace TaskManager.API.Controllers
             var response = new ApiResponse<IEnumerable<UserDto>>(users, "List of users");
             return Ok(response);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ApiResponse<UserDto>>> GetById(int id)
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound(new ApiResponse<UserDto>("User not found"));
+            }
+            var response = new ApiResponse<UserDto>(user, "User details");
+            return Ok(response);
+        }
     }
 }

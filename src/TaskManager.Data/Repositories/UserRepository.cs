@@ -22,5 +22,10 @@ namespace TaskManager.Data.Repositories
         {
             return await _context.Users.Where(u => !u.IsDeleted).ToListAsync();
         }
+
+        public async Task<User?> GetUserByIdAsync(int userId)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
+        }
     }
 }
