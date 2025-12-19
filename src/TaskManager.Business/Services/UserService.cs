@@ -34,5 +34,11 @@ namespace TaskManager.Business.Services
             var user = await _userRepository.GetUserByIdAsync(userId);
             return user == null ? null : _mapper.Map<UserDto>(user);
         }
+
+        public async Task<UserDto?> GetUserByEmail(string email)
+        {
+            var user = await _userRepository.GetUserByEmail(email);
+            return user == null ? null : _mapper.Map<UserDto>(user);
+        }
     }
 }

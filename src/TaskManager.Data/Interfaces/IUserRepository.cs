@@ -11,5 +11,6 @@ namespace TaskManager.Data.Interfaces
     {
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task<User?> GetUserByIdAsync(int userId);
+        Task<User?> GetUserByEmail(string email);
     }
 }

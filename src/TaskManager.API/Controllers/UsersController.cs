@@ -33,7 +33,18 @@ namespace TaskManager.API.Controllers
             {
                 return NotFound(new ApiResponse<UserDto>("User not found"));
             }
-            var response = new ApiResponse<UserDto>(user, "User details");
+            var response = new ApiResponse<UserDto>(user, "User info");
+            return Ok(response);
+        }
+        [HttpGet("email")]
+        public async Task<ActionResult<ApiResponse<UserDto>>> GetUserByIdAsync(string email)
+        {
+            var user = await _userService.GetUserByEmail(email);
+            if (user == null)
+            {
+                return NotFound(new ApiResponse<UserDto>("User not found"));
+            }
+            var response = new ApiResponse<UserDto>(user, "User info");
             return Ok(response);
         }
     }

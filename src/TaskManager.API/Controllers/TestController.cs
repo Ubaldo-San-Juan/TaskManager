@@ -10,7 +10,7 @@ namespace TaskManager.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("API Arriba");
+            return Ok("Alive");
         }
     }
 }
