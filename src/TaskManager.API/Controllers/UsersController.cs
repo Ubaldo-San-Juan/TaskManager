@@ -37,15 +37,24 @@ namespace TaskManager.API.Controllers
             return Ok(response);
         }
         [HttpGet("email")]
-        public async Task<ActionResult<ApiResponse<UserDto>>> GetUserByIdAsync(string email)
+        public async Task<ActionResult<ApiResponse<UserDto>>> GetUserByEmailAsync([FromQuery] string email)
         {
-            var user = await _userService.GetUserByEmail(email);
+            var user = await _userService.GetUserByEmailAsync(email);
             if (user == null)
             {
                 return NotFound(new ApiResponse<UserDto>("User not found"));
             }
             var response = new ApiResponse<UserDto>(user, "User info");
             return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ApiResponse<UserDto>>> CreateUserAsync([FromBody] CreateUserDto createUserDto)
+        {
+            var userToCreate = await _userService.CreateUserAsync(createUserDto);
+            var response = new ApiResponse<UserDto>(userToCreate, "User created successfully");
+
+            return CreatedAtAction(nameof(GetById), new { id = userToCreate.Id }, response);
         }
     }
 }

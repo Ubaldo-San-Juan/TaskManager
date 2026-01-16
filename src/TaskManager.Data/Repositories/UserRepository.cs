@@ -27,9 +27,15 @@ namespace TaskManager.Data.Repositories
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
         }
-        public async Task<User?> GetUserByEmail(string email)
+        public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email && !u.IsDeleted);
+        }
+
+        public async Task CreateUserAsync(User user)
+        {
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
         }
     }
 }

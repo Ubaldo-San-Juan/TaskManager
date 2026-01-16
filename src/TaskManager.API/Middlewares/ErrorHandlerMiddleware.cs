@@ -36,7 +36,7 @@ namespace TaskManager.API.Middlewares
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         
                         var errors = e.Errors.Select(x => x.ErrorMessage).ToList();
-                        responseModel = new ApiResponse<string>(e.Message);
+                        responseModel = new ApiResponse<string>("Error de validación", errors);
                     break;
 
                     case KeyNotFoundException e:
@@ -57,6 +57,7 @@ namespace TaskManager.API.Middlewares
                 }
 
                 var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+                response.ContentType = "application/json";
                 await response.WriteAsync(JsonSerializer.Serialize(responseModel, options));
             }
         }

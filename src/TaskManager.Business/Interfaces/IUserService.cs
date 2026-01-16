@@ -11,6 +11,7 @@ namespace TaskManager.Business.Interfaces
     {
         Task<IEnumerable<UserDto>> GetAllUsersAsync();
         Task<UserDto?> GetUserByIdAsync(int userId);
-        Task<UserDto?> GetUserByEmail(string email);
+        Task<UserDto?> GetUserByEmailAsync(string email);
+        Task<UserDto> CreateUserAsync(CreateUserDto createUserDto);
     }
 }
