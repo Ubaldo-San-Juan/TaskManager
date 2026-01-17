@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using TaskManager.Business.Common;
 using TaskManager.Business.Interfaces;
 using TaskManager.Business.Mappings;
 using TaskManager.Business.Services;
@@ -30,6 +31,9 @@ namespace TaskManager.API.Extensions
 
             // Business Services
             services.AddScoped<IUserService, UserService>();
+
+            // JWT Settings
+            services.Configure<JwtSettings>(config.GetSection("JwtSettings"));
 
             return services;
         }
