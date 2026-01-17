@@ -103,5 +103,18 @@ namespace TaskManager.Business.Services
             await _userRepository.UpdateUserAsync(existUserToUpdate);
             return _mapper.Map<UserDto>(existUserToUpdate);
         }
+
+        public async Task DeleteUserAsync(int idUser)
+        {
+            var userToDelete = await _userRepository.GetUserByIdAsync(idUser);
+            
+            if(userToDelete == null)
+            {
+                throw new KeyNotFoundException("User not found.");
+            }
+            userToDelete.IsDeleted = true;
+            userToDelete.DeletedAt = DateTime.UtcNow;
+            await _userRepository.DeleteUserAsync(userToDelete);
+        }
     }
 }

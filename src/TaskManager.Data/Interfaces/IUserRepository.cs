@@ -14,5 +14,6 @@ namespace TaskManager.Data.Interfaces
         Task<User?> GetUserByEmailAsync(string email);
         Task CreateUserAsync(User user);
         Task UpdateUserAsync(User user);
+        Task DeleteUserAsync(User user);
     }
 }

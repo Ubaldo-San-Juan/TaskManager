@@ -14,5 +14,6 @@ namespace TaskManager.Business.Interfaces
         Task<UserDto?> GetUserByEmailAsync(string email);
         Task<UserDto> CreateUserAsync(CreateUserDto createUserDto);
         Task<UserDto> UpdateUserAsync(int idUser, UpdateUserDto updateUserDto);
+        Task DeleteUserAsync(int idUser);
     }
 }

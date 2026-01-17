@@ -64,5 +64,13 @@ namespace TaskManager.API.Controllers
             var response = new ApiResponse<UserDto>(updatedUser, "User updated successfully");
             return Ok(response);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ApiResponse<string>>> DeleteUserAsync([FromRoute] int id)
+        {
+            await _userService.DeleteUserAsync(id);
+            var response = new ApiResponse<string>("User deleted successfully");
+            return Ok(response);
+        }
     }
 }

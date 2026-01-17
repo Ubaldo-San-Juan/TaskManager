@@ -43,5 +43,11 @@ namespace TaskManager.Data.Repositories
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
         }
+
+        public async Task DeleteUserAsync(User user)
+        {
+            _context.Users.Update(user); //We use update because is a soft delete
+            await _context.SaveChangesAsync();
+        }
     }
 }

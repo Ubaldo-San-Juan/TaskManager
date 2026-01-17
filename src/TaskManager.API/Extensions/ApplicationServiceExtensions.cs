@@ -31,7 +31,6 @@ namespace TaskManager.API.Extensions
             // Business Services
             services.AddScoped<IUserService, UserService>();
 
-
             return services;
         }
     }

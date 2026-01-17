@@ -36,7 +36,7 @@ namespace TaskManager.API.Middlewares
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         
                         var errors = e.Errors.Select(x => x.ErrorMessage).ToList();
-                        responseModel = new ApiResponse<string>("Error de validación", errors);
+                        responseModel = new ApiResponse<string>("Validation error", errors);
                     break;
 
                     case KeyNotFoundException e:
