@@ -29,12 +29,14 @@ namespace TaskManager.API.Extensions
             // Fluent validation
             services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
 
-            // Business Services
+            // User Services
             services.AddScoped<IUserService, UserService>();
 
             // JWT Settings
             services.Configure<JwtSettings>(config.GetSection("JwtSettings"));
 
+            // Auth Service
+            services.AddScoped<IAuthService, AuthService>();
             return services;
         }
     }
