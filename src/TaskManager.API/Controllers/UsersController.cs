@@ -56,5 +56,13 @@ namespace TaskManager.API.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = userToCreate.Id }, response);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ApiResponse<string>>> UpdateUserAsync([FromRoute] int id, [FromBody] UpdateUserDto updateUserDto)
+        {
+            var updatedUser = await _userService.UpdateUserAsync(id, updateUserDto);
+            var response = new ApiResponse<UserDto>(updatedUser, "User updated successfully");
+            return Ok(response);
+        }
     }
 }

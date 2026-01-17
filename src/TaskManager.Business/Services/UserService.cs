@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.Identity.Client;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +19,18 @@ namespace TaskManager.Business.Services
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IValidator<CreateUserDto> _createValidator;
+        private readonly IValidator<UpdateUserDto> _updateValidator;
 
-        public UserService(IUserRepository userRepository, IMapper mapper, IValidator<CreateUserDto> createValidator)
+        public UserService(
+            IUserRepository userRepository, 
+            IMapper mapper, 
+            IValidator<CreateUserDto> createValidator, 
+            IValidator<UpdateUserDto> updateValidator)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
@@ -53,7 +61,7 @@ namespace TaskManager.Business.Services
             var userExist = await _userRepository.GetUserByEmailAsync(createUserDto.Email);
             if (userExist != null)
             {
-                throw new InvalidOperationException("Ya existe un usuario registrado con este email.");
+                throw new InvalidOperationException("An user is already exists with this email.");
             }
 
             var userEntity = _mapper.Map<User>(createUserDto);
@@ -61,6 +69,39 @@ namespace TaskManager.Business.Services
             await _userRepository.CreateUserAsync(userEntity);
 
             return _mapper.Map<UserDto>(userEntity);
+        }
+
+        public async Task<UserDto> UpdateUserAsync(int idUser, UpdateUserDto updateUserDto)
+        {
+            //Validate user input
+            var validationResult = _updateValidator.Validate(updateUserDto);
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            // Check if user exists
+            var existUserToUpdate = await _userRepository.GetUserByIdAsync(idUser);
+            if (existUserToUpdate == null)
+            {
+                throw new KeyNotFoundException("User not found.");
+            }
+
+            // Verify if email is being updated to an email that already exists
+            if(updateUserDto.Email != existUserToUpdate.Email)
+            {
+                var userWithEmail = await _userRepository.GetUserByEmailAsync(updateUserDto.Email);
+                if (userWithEmail != null)
+                {
+                    throw new InvalidOperationException("An user is already exists with this email.");
+                }
+            }
+            
+            existUserToUpdate.UpdatedAt = DateTime.UtcNow;
+
+            _mapper.Map(updateUserDto, existUserToUpdate);
+            await _userRepository.UpdateUserAsync(existUserToUpdate);
+            return _mapper.Map<UserDto>(existUserToUpdate);
         }
     }
 }
