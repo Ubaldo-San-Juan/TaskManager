@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using TaskManager.API.Extensions;
+using TaskManager.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
@@ -12,6 +13,7 @@ builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 
+await app.SeedDataAsync();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -21,7 +23,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
+app.UseAuthorization();
+app.UseMiddleware<ErrorHandlerMiddleware>();
 app.MapControllers();
 
 
