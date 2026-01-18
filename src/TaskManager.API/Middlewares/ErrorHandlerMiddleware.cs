@@ -47,8 +47,11 @@ namespace TaskManager.API.Middlewares
                     case InvalidOperationException e:
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         responseModel = new ApiResponse<string>(e.Message);
-                    break;
-
+                        break;
+                    case UnauthorizedAccessException e:
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        responseModel = new ApiResponse<string>(e.Message);
+                        break;
                     default:
                         _logger.LogError(ex, ex.Message);
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
