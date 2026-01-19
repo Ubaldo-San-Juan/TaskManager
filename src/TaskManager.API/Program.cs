@@ -3,14 +3,11 @@ using TaskManager.API.Extensions;
 using TaskManager.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddOpenApi();
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddApplicationServices(builder.Configuration);
-
+builder.Services.AddSwaggerDocumentation();
 var app = builder.Build();
 
 await app.SeedDataAsync();
@@ -24,6 +21,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 app.MapControllers();
