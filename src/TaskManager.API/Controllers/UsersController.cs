@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Business.Common;
 using TaskManager.Business.DTOs.Users;
@@ -6,6 +7,7 @@ using TaskManager.Business.Interfaces;
 
 namespace TaskManager.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
@@ -18,15 +20,15 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<IEnumerable<UserDto>>>> GetAll()
+        public async Task<ActionResult<ApiResponse<IEnumerable<UserDto>>>> GetAllUsersAsync()
         {
             var users = await _userService.GetAllUsersAsync();
             var response = new ApiResponse<IEnumerable<UserDto>>(users, "List of users");
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ApiResponse<UserDto>>> GetById(int id)
+        [HttpGet("{id}", Name = "GetUserById")]
+        public async Task<ActionResult<ApiResponse<UserDto>>> GetUserByIdAsync(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
             if (user == null)
@@ -48,13 +50,14 @@ namespace TaskManager.API.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<ApiResponse<UserDto>>> CreateUserAsync([FromBody] CreateUserDto createUserDto)
         {
             var userToCreate = await _userService.CreateUserAsync(createUserDto);
             var response = new ApiResponse<UserDto>(userToCreate, "User created successfully");
 
-            return CreatedAtAction(nameof(GetById), new { id = userToCreate.Id }, response);
+            return CreatedAtRoute("GetUserById", new { id = userToCreate.Id }, response);
         }
 
         [HttpPut("{id}")]
@@ -69,7 +72,7 @@ namespace TaskManager.API.Controllers
         public async Task<ActionResult<ApiResponse<string>>> DeleteUserAsync([FromRoute] int id)
         {
             await _userService.DeleteUserAsync(id);
-            var response = new ApiResponse<string>("User deleted successfully");
+            var response = new ApiResponse<string>(null, "User deleted successfully");
             return Ok(response);
         }
     }

@@ -1,5 +1,8 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using TaskManager.Business.Common;
 using TaskManager.Business.Interfaces;
 using TaskManager.Business.Mappings;
@@ -37,6 +40,42 @@ namespace TaskManager.API.Extensions
 
             // Auth Service
             services.AddScoped<IAuthService, AuthService>();
+
+            // Configurar la autenticación con JWT
+            var jwtSettings = config.GetSection("JwtSettings").Get<JwtSettings>();
+            var key = Encoding.UTF8.GetBytes(jwtSettings!.SecretKey);
+
+            // 2. Activamos el servicio de Autenticación
+            services.AddAuthentication(options =>
+            {
+                // Definimos que por defecto usaremos JWT Bearer
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    // Validar que la clave de firma sea correcta
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+
+                    // Validar el Emisor (Issuer)
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtSettings.Issuer,
+
+                    // Validar la Audiencia (Audience)
+                    ValidateAudience = true,
+                    ValidAudience = jwtSettings.Audience,
+
+                    // Validar que no haya expirado
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero // Sin tiempo de gracia
+                };
+            });
+
             return services;
         }
     }
