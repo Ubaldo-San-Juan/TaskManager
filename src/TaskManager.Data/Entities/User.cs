@@ -12,7 +12,7 @@ namespace TaskManager.Data.Entities
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
 
-        public int RoleId { get; set; }
+        public int RoleId { get; set; } // Foreing Key
         public virtual Role? Role { get; set; }
 
         public virtual ICollection<TodoTask>? Tasks { get; set; }
