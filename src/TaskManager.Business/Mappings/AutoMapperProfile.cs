@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Business.DTOs.Roles;
 using TaskManager.Business.DTOs.Users;
 using TaskManager.Data.Entities;
 
@@ -13,18 +14,21 @@ namespace TaskManager.Business.Mappings
     {
         public AutoMapperProfile() 
         {
-            // Mapping from Entity to DTO mode reading data
+            // Mapping for User Entity and DTOs
             CreateMap<User, UserDto>();
 
-            // Mapping from DTO to Entity mode writing data
             CreateMap<CreateUserDto, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
 
-            // Mapping from DTO to Entity mode updating data
             CreateMap<UpdateUserDto, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
 
+
+            // Mapping for Role Entity and DTOs
+            CreateMap<Role, RoleDto>();
+            CreateMap<CreateRoleDto, Role>();
+            CreateMap<UpdateRoleDto, Role>();
         }
     }
 }
