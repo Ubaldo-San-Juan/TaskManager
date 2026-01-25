@@ -10,11 +10,11 @@ namespace TaskManager.Data.Interfaces
     public interface IRoleRepository
     {
         Task<IEnumerable<Role>> GetAllRoleAsync();
-        Task<Role> GetRoleByIdAsync(int id);
-        Task<Role> GetRoleByNameAsync(string name);
+        Task<Role?> GetRoleByIdAsync(int id);
+        Task<Role?> GetRoleByNameAsync(string name);
         Task CreateRoleAsync(Role role);
         Task UpdateRoleAsync(Role role);
-        Task DeleteRoleAsync(int id);
+        Task DeleteRoleAsync(Role role);
 
     }
 }
