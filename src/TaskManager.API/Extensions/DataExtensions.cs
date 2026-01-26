@@ -1,5 +1,6 @@
 ﻿using TaskManager.Data.Context;
 using TaskManager.Data.Seeders;
+using Microsoft.Extensions.Hosting;
 
 namespace TaskManager.API.Extensions
 {
@@ -7,8 +8,6 @@ namespace TaskManager.API.Extensions
     {
         public static async Task SeedDataAsync(this WebApplication app)
         {
-            if (!app.Environment.IsDevelopment()) { return; }
-
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
             var logger = services.GetRequiredService<ILogger<Program>>();
@@ -17,7 +16,11 @@ namespace TaskManager.API.Extensions
             {
                 var context = services.GetRequiredService<ApplicationDbContext>();
                 logger.LogInformation("Seeding the database...");
-                await DbSeeder.SeedAsync(context, 10, 5);
+                
+                // Pass IsDevelopment flag to the seeder
+                bool isDevelopment = app.Environment.IsDevelopment();
+                await DbSeeder.SeedAsync(context, services, 10, 5, isDevelopment);
+                
                 logger.LogInformation("Database seeding completed.");
             }
             catch (Exception ex)
