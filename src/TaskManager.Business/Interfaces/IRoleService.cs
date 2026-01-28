@@ -13,7 +13,7 @@ namespace TaskManager.Business.Interfaces
         Task<IEnumerable<RoleDto>> GetAllRolesAsync();
         Task<RoleDto?> GetRoleByIdAsync(int roleId);
         Task<RoleDto> CreateRoleAsync(CreateRoleDto createRoleDto);
-        Task UpdateRoleAsync(int roleId, UpdateRoleDto updateRoleDto);
+        Task<RoleDto> UpdateRoleAsync(int roleId, UpdateRoleDto updateRoleDto);
         Task DeleteRoleAsync(int roleId);
     }
 }

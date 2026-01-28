@@ -68,7 +68,7 @@ namespace TaskManager.Business.Services
             return _mapper.Map<RoleDto>(role);
         }
 
-        public async Task UpdateRoleAsync(int roleId, UpdateRoleDto updateRoleDto)
+        public async Task<RoleDto> UpdateRoleAsync(int roleId, UpdateRoleDto updateRoleDto)
         {
             var roleEntity = await _roleRepository.GetRoleByIdAsync(roleId);
             if (roleEntity == null)
@@ -88,6 +88,7 @@ namespace TaskManager.Business.Services
             _mapper.Map(updateRoleDto, roleEntity);
             roleEntity.UpdatedAt = DateTime.UtcNow;
             await _roleRepository.UpdateRoleAsync(roleEntity);
+            return _mapper.Map<RoleDto>(roleEntity);
         }
     }
 }
