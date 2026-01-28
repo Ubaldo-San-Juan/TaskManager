@@ -63,8 +63,8 @@ namespace TaskManager.API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<ApiResponse<string>>> UpdateUserAsync([FromRoute] int id, [FromBody] UpdateUserDto updateUserDto)
         {
-            var updatedUser = await _userService.UpdateUserAsync(id, updateUserDto);
-            var response = new ApiResponse<UserDto>(updatedUser, "User updated successfully");
+            var userUpdated = await _userService.UpdateUserAsync(id, updateUserDto);
+            var response = new ApiResponse<UserDto>(userUpdated, "User updated successfully");
             return Ok(response);
         }
 

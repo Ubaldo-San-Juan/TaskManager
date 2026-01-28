@@ -21,9 +21,9 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
+app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<ErrorHandlerMiddleware>();
 app.MapControllers();
 
 
