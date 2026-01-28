@@ -16,7 +16,7 @@ namespace TaskManager.Business.Common
         public ApiResponse() { }
 
         // Constructor for successful response with data
-        public ApiResponse(T data, string mensaje = "")
+        public ApiResponse(T? data, string mensaje = "")
         {
             Success = true;
             Message = mensaje;

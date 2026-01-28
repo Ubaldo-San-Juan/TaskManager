@@ -25,6 +25,7 @@ namespace TaskManager.API.Extensions
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
 
             // Automapper
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
@@ -32,14 +33,14 @@ namespace TaskManager.API.Extensions
             // Fluent validation
             services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
 
-            // User Services
+            // Services
             services.AddScoped<IUserService, UserService>();
-
+            services.AddScoped<IRoleService, RoleService>();
+            // Auth Service
+            services.AddScoped<IAuthService, AuthService>();
             // JWT Settings
             services.Configure<JwtSettings>(config.GetSection("JwtSettings"));
 
-            // Auth Service
-            services.AddScoped<IAuthService, AuthService>();
 
             // Configurar la autenticación con JWT
             var jwtSettings = config.GetSection("JwtSettings").Get<JwtSettings>();

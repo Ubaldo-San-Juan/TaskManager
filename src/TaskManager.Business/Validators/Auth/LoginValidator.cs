@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Business.DTOs.Auth;
 
-namespace TaskManager.Business.Validators
+namespace TaskManager.Business.Validators.Auth
 {
     public class LoginValidator : AbstractValidator<LoginDto>
     {
