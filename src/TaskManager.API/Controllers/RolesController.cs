@@ -48,7 +48,7 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ApiResponse<string>>> UpdateRoleAsync([FromRoute] int id, [FromBody] UpdateRoleDto updateRoleDto)
+        public async Task<ActionResult<ApiResponse<RoleDto>>> UpdateRoleAsync([FromRoute] int id, [FromBody] UpdateRoleDto updateRoleDto)
         {
             var roleUpdated = await _roleService.UpdateRoleAsync(id, updateRoleDto);
             var response = new ApiResponse<RoleDto>(roleUpdated, "Role updated successfully");

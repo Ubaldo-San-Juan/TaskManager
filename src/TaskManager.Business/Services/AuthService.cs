@@ -67,7 +67,6 @@ namespace TaskManager.Business.Services
             };
         }
 
-        // Method to generate JWT token
         private string GenerateJwtToken(User user)
         {
             // Create claims based on user information
@@ -76,7 +75,8 @@ namespace TaskManager.Business.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()), // Subject - user ID
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // Unique identifier for the token
-                new Claim("Name", user.Name)
+                new Claim("Name", user.Name),
+                new Claim(ClaimTypes.Role, user.Role?.Name ?? "User")
             };
 
             // Create security key and signing credentials
