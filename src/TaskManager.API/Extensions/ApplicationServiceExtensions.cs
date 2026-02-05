@@ -36,8 +36,13 @@ namespace TaskManager.API.Extensions
             // Services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
+
             // Auth Service
             services.AddScoped<IAuthService, AuthService>();
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+
             // JWT Settings
             services.Configure<JwtSettings>(config.GetSection("JwtSettings"));
 
