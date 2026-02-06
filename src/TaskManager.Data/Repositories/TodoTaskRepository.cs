@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Data.Context;
 using TaskManager.Data.Entities;
 using TaskManager.Data.Interfaces;
 
@@ -10,34 +12,51 @@ namespace TaskManager.Data.Repositories
 {
     public class TodoTaskRepository : ITodoTaskRepository
     {
-        public Task CreateTaskAsync(TodoTask task)
+        private readonly ApplicationDbContext _context;
+        public TodoTaskRepository(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task DeleteTaskAsync(TodoTask task)
+        public async Task<IEnumerable<TodoTask>> GetAllTasksAsync()
         {
-            throw new NotImplementedException();
+            var tasks = await _context.Tasks.Where(t => !t.IsDeleted)
+                .OrderByDescending(t => t.CreatedAt)
+                .ToListAsync();
+            return tasks;
         }
 
-        public Task<IEnumerable<TodoTask>> GetAllTasksAsync()
+        public async Task<IEnumerable<TodoTask>> GetAllTasksByUserAsync(int userId)
         {
-            throw new NotImplementedException();
+            var tasks = await _context.Tasks.Where(t => t.UserId == userId && !t.IsDeleted)
+                .OrderByDescending(t => t.CreatedAt)
+                .ToListAsync();
+            return tasks;
         }
 
-        public Task<IEnumerable<TodoTask>> GetAllTasksByUserAsync(int userId)
+        public async Task<TodoTask?> GetTaskByIdAsync(int idTask)
         {
-            throw new NotImplementedException();
+            var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == idTask && !t.IsDeleted);
+            return task;
         }
-
-        public Task<TodoTask?> GetTaskByIdAsync(int idTask)
+        public async Task CreateTaskAsync(TodoTask task)
         {
-            throw new NotImplementedException();
+            await _context.Tasks.AddAsync(task);
+            await _context.SaveChangesAsync();
         }
 
         public Task UpdateTaskAsync(TodoTask task)
         {
-            throw new NotImplementedException();
+            task.UpdatedAt = DateTime.UtcNow;
+            _context.Tasks.Update(task);
+            return _context.SaveChangesAsync();
+        }
+        public Task DeleteTaskAsync(TodoTask task)
+        {
+            task.IsDeleted = true;
+            task.DeletedAt = DateTime.UtcNow;
+            _context.Tasks.Update(task);
+            return _context.SaveChangesAsync();
         }
     }
 }
