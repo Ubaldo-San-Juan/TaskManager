@@ -14,6 +14,6 @@ namespace TaskManager.Data.Entities
         public bool IsCompleted { get; set; } = false;
         
         public int UserId { get; set; }
-        public User? User { get; set; }
+        public virtual User? User { get; set; }
     }
 }
