@@ -17,19 +17,19 @@ namespace TaskManager.Business.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
         private readonly IMapper _mapper;
-        private readonly IValidator<CreateUserDto> _createValidator;
         private readonly IValidator<UpdateUserDto> _updateValidator;
 
         public UserService(
             IUserRepository userRepository, 
-            IMapper mapper, 
-            IValidator<CreateUserDto> createValidator, 
+            IRoleRepository roleRepository,
+            IMapper mapper,
             IValidator<UpdateUserDto> updateValidator)
         {
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
             _mapper = mapper;
-            _createValidator = createValidator;
             _updateValidator = updateValidator;
         }
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
@@ -48,27 +48,6 @@ namespace TaskManager.Business.Services
         {
             var user = await _userRepository.GetUserByEmailAsync(email);
             return user == null ? null : _mapper.Map<UserDto>(user);
-        }
-
-        public async Task<UserDto> CreateUserAsync(CreateUserDto createUserDto)
-        {
-            var validationResult = await _createValidator.ValidateAsync(createUserDto);
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
-
-            var userExist = await _userRepository.GetUserByEmailAsync(createUserDto.Email);
-            if (userExist != null)
-            {
-                throw new InvalidOperationException("An user is already exists with this email.");
-            }
-
-            var userEntity = _mapper.Map<User>(createUserDto);
-            userEntity.PasswordHash = BCrypt.Net.BCrypt.HashPassword(createUserDto.Password);
-            await _userRepository.CreateUserAsync(userEntity);
-
-            return _mapper.Map<UserDto>(userEntity);
         }
 
         public async Task<UserDto> UpdateUserAsync(int idUser, UpdateUserDto updateUserDto)

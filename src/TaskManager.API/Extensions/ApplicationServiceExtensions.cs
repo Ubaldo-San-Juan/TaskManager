@@ -8,6 +8,7 @@ using TaskManager.Business.Interfaces;
 using TaskManager.Business.Mappings;
 using TaskManager.Business.Services;
 using TaskManager.Business.Validators;
+using TaskManager.Business.Validators.Auth;
 using TaskManager.Data.Context;
 using TaskManager.Data.Interfaces;
 using TaskManager.Data.Repositories;
@@ -32,7 +33,7 @@ namespace TaskManager.API.Extensions
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
             // Fluent validation
-            services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
+            services.AddValidatorsFromAssemblyContaining<RegisterValidator>();
 
             // Services
             services.AddScoped<IUserService, UserService>();

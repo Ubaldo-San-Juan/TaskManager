@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Business.DTOs.Auth;
 using TaskManager.Business.DTOs.Roles;
 using TaskManager.Business.DTOs.Tasks;
 using TaskManager.Business.DTOs.Users;
@@ -15,10 +16,13 @@ namespace TaskManager.Business.Mappings
     {
         public AutoMapperProfile() 
         {
+
+            // Mapping for Authentication
+            CreateMap<RegisterDto, User>()
+            .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
+
             // Mapping for User Entity and DTOs
             CreateMap<User, UserDto>();
-            CreateMap<CreateUserDto, User>()
-                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
             CreateMap<UpdateUserDto, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
