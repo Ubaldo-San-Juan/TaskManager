@@ -8,7 +8,7 @@ using TaskManager.Business.Interfaces;
 
 namespace TaskManager.API.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class RolesController : ControllerBase

@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManager.Business.DTOs.Users;
+using TaskManager.Business.DTOs.Auth;
 
-namespace TaskManager.Business.Validators
+namespace TaskManager.Business.Validators.Auth
 {
-    public class CreateUserValidator : AbstractValidator<CreateUserDto>
+    public class RegisterValidator : AbstractValidator<RegisterDto>
     {
-        public CreateUserValidator()
+        public RegisterValidator()
         {
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Name is required.")
