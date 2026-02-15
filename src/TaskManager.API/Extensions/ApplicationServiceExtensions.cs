@@ -26,6 +26,7 @@ namespace TaskManager.API.Extensions
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<ITodoTaskRepository, TodoTaskRepository>();
 
             // Automapper
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
@@ -36,6 +37,7 @@ namespace TaskManager.API.Extensions
             // Services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<ITodoTaskService, TodoTaskService>();
 
             // Auth Service
             services.AddScoped<IAuthService, AuthService>();
