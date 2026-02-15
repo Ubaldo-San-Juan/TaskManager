@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Business.DTOs.Users
+namespace TaskManager.Business.DTOs.Auth
 {
-    public class CreateUserDto
+    public class RegisterDto
     {
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

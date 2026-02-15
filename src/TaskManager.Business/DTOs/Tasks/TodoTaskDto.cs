@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Data.Entities
+namespace TaskManager.Business.DTOs.Tasks
 {
-    public class TodoTask : BaseEntity
+    public class TodoTaskDto
     {
+        public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public bool IsCompleted { get; set; } = false;
-        
         public int UserId { get; set; }
-        public virtual User? User { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

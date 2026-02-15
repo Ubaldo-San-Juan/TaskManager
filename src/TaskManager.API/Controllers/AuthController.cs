@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TaskManager.Business.Common;
 using TaskManager.Business.DTOs.Auth;
+using TaskManager.Business.DTOs.Users;
 using TaskManager.Business.Interfaces;
 
 namespace TaskManager.API.Controllers
@@ -21,6 +22,14 @@ namespace TaskManager.API.Controllers
             var result = await _authService.LoginAsync(loginDto);
 
             var response = new ApiResponse<AuthResponseDto>(result, "Login success");
+            return Ok(response);
+        }
+
+        [HttpPost("register")]
+        public async Task<ActionResult<ApiResponse<AuthResponseDto>>> Register([FromBody] RegisterDto registerDto)
+        {
+            var result = await _authService.RegisterAsync(registerDto);
+            var response = new ApiResponse<UserDto>(result, "Register success");
             return Ok(response);
         }
     }
