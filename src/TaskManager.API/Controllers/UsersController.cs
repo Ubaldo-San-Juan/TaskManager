@@ -7,7 +7,7 @@ using TaskManager.Business.Interfaces;
 
 namespace TaskManager.API.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
@@ -48,16 +48,6 @@ namespace TaskManager.API.Controllers
             }
             var response = new ApiResponse<UserDto>(user, "User info");
             return Ok(response);
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<ActionResult<ApiResponse<UserDto>>> CreateUserAsync([FromBody] CreateUserDto createUserDto)
-        {
-            var userToCreate = await _userService.CreateUserAsync(createUserDto);
-            var response = new ApiResponse<UserDto>(userToCreate, "User created successfully");
-
-            return CreatedAtRoute("GetUserById", new { id = userToCreate.Id }, response);
         }
 
         [HttpPut("{id}")]

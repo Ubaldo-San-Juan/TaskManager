@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -10,9 +11,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Business.Common;
 using TaskManager.Business.DTOs.Auth;
+using TaskManager.Business.DTOs.Users;
 using TaskManager.Business.Interfaces;
 using TaskManager.Data.Entities;
 using TaskManager.Data.Interfaces;
+using TaskManager.Data.Repositories;
 
 namespace TaskManager.Business.Services
 {
@@ -21,15 +24,25 @@ namespace TaskManager.Business.Services
         private readonly IUserRepository _userRepository;
         private readonly JwtSettings _jwtSettings;
         private readonly IValidator<LoginDto> _loginValidator;
+        private readonly IValidator<RegisterDto> _registerValidator;
+        private readonly IRoleRepository _roleRepository;
+        private readonly IMapper _mapper;
 
         public AuthService(
             IUserRepository userRepository,
             IOptions<JwtSettings> jwtSettings,
-            IValidator<LoginDto> loginValidator)
+            IValidator<LoginDto> loginValidator,
+            IValidator<RegisterDto> registerValidator,
+            IRoleRepository roleRepository,
+            IMapper mapper
+        )
         {
             _userRepository = userRepository;
             _jwtSettings = jwtSettings.Value;
             _loginValidator = loginValidator;
+            _registerValidator = registerValidator;
+            _roleRepository = roleRepository;
+            _mapper = mapper;
         }
         public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto)
         {
@@ -65,6 +78,35 @@ namespace TaskManager.Business.Services
                 Email = user.Email,
                 Token = token
             };
+        }
+
+        public async Task<UserDto> RegisterAsync(RegisterDto registerDto)
+        {
+            var validationResult = await _registerValidator.ValidateAsync(registerDto);
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            var userExist = await _userRepository.GetUserByEmailAsync(registerDto.Email);
+            if (userExist != null)
+            {
+                throw new InvalidOperationException("An user is already exists with this email.");
+            }
+
+            var role = await _roleRepository.GetRoleByNameAsync("User");
+            if (role == null)
+            {
+                throw new InvalidOperationException("Default role 'User' not found.");
+            }
+
+            var userEntity = _mapper.Map<User>(registerDto);
+            userEntity.PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password);
+            userEntity.RoleId = role.Id;
+            userEntity.CreatedAt = DateTime.UtcNow;
+
+            await _userRepository.CreateUserAsync(userEntity);
+            return _mapper.Map<UserDto>(userEntity);
         }
 
         private string GenerateJwtToken(User user)
