@@ -15,7 +15,12 @@ namespace TaskManager.Data.Entities
         public bool IsCompleted { get; set; } = false;
         public DateTime? DueDate { get; set; }
         public TaskPriority Priority { get; set; } = TaskPriority.Medium;
+    
         public int UserId { get; set; }
         public virtual User? User { get; set; }
+
+        public int? CategoryId { get; set; }
+        public virtual Category? Category { get; set; }
+
     }
 }
